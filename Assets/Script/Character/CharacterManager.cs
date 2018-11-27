@@ -12,13 +12,12 @@ public class CharacterManager : MonoBehaviour {
 
     private void Start()
     {
+        index = 0;
         characters = new List<GameObject>();
         GetCharacter();
-        index = 0;
         HideCharacter();
 
         characters[0].SetActive(true);
-        
     }
     
     private void GetCharacter()
