@@ -9,9 +9,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7551012f27e3ba64596e31ce2684e0a2, type: 3}
-  m_Name: Defence
+  m_Name: Ulti Wiro
   m_EditorClassIdentifier: 
-  cardSprite: {fileID: 21300000, guid: be7a3d7e7f6de9d47b2c6460650a796b, type: 3}
-  cardId: 2
+  cardSprite: {fileID: 21300000, guid: b86a59d241164f44d8763454d3907311, type: 3}
+  cardId: 0
   cardValue: 0
-  cardType: 0
+  cardType: 6
