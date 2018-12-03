@@ -5,11 +5,19 @@ using UnityEngine;
 public class GameMaster : MonoBehaviour {
     public static GameMaster gm;
     public GameObject cardPrefab;
+    public Deck deck;
+    public Hand hand;
     // Use this for initialization
 
     private void Awake()
     {
         gm = this;
+    }
+
+    private void Start()
+    {
+        deck.Shuffle();
+        hand.Draw3();
     }
 
     public void CreateCard(CardYasir cardInfo, Transform startPos, Transform cardPos, List<GameObject> cardList)

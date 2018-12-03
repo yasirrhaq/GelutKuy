@@ -10,21 +10,24 @@ public class Hand : MonoBehaviour {
 
     public Transform[] cardPos;
 
+    public int index;
+    public int cardCount;
+
     public void Draw()
     {
-        cards.Add(deck.Draw());
-        GameMaster.gm.CreateCard(cards[0], deck.transform, cardPos[0], cardObjects);
+        if (deck.cardIds.Count > 0)
+        {
+            cards.Add(deck.Draw());
+            GameMaster.gm.CreateCard(cards[index], deck.transform, cardPos[index], cardObjects);
+            index++;
+        }
     }
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        if (Input.GetKeyDown(KeyCode.A))
+
+    public void Draw3()
+    {
+        for (int i = 0; i < 3; i++)
         {
             Draw();
         }
-	}
+    }
 }

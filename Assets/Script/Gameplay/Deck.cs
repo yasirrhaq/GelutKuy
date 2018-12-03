@@ -26,7 +26,7 @@ public class Deck : MonoBehaviour {
         {
             int index = Random.Range(0, cardIds.Count);
             shuffledCard.Add(cardIds[index]);
-            shuffledCard.RemoveAt(index);
+            cardIds.RemoveAt(index);
         }
         cardIds = shuffledCard;
     }
