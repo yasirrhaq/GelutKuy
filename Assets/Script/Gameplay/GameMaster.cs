@@ -17,7 +17,15 @@ public class GameMaster : MonoBehaviour {
     private void Start()
     {
         deck.Shuffle();
-        hand.Draw3();
+        //hand.Draw3();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            hand.Draw();
+        }  
     }
 
     public void CreateCard(CardYasir cardInfo, Transform startPos, Transform cardPos, List<GameObject> cardList)
