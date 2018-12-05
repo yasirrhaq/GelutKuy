@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7551012f27e3ba64596e31ce2684e0a2, type: 3}
   m_Name: Heal
   m_EditorClassIdentifier: 
-  cardSprite: {fileID: 21300000, guid: ee1127b9f1e71484c98cdaadf9a408e4, type: 3}
+  cardSprite: {fileID: 21300000, guid: 616c63bd8adf19f47aa748ceeb161cc3, type: 3}
   cardId: 66
   cardValue: 20
-  cardType: 5
+  cardType: 2

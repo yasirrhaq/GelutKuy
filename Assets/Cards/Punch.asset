@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7551012f27e3ba64596e31ce2684e0a2, type: 3}
   m_Name: Punch
   m_EditorClassIdentifier: 
-  cardSprite: {fileID: 21300000, guid: 023aef23f1ad86441a5d4055e8891927, type: 3}
+  cardSprite: {fileID: 21300000, guid: 679ed30e2d49e3c4293dfea22ac1edaf, type: 3}
   cardId: 1
   cardValue: 10
   cardType: 0

@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7551012f27e3ba64596e31ce2684e0a2, type: 3}
   m_Name: Kick
   m_EditorClassIdentifier: 
-  cardSprite: {fileID: 21300000, guid: 1890965a697c1394c81c05be34d1d268, type: 3}
+  cardSprite: {fileID: 21300000, guid: 0e79d8a73d186484d9105ff2e2e2be54, type: 3}
   cardId: 5
   cardValue: 15
-  cardType: 1
+  cardType: 0

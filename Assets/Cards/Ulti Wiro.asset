@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7551012f27e3ba64596e31ce2684e0a2, type: 3}
   m_Name: Ulti Wiro
   m_EditorClassIdentifier: 
-  cardSprite: {fileID: 21300000, guid: b86a59d241164f44d8763454d3907311, type: 3}
-  cardId: 0
+  cardSprite: {fileID: 21300000, guid: f3f719566d8b1714ebb8eadd26995504, type: 3}
+  cardId: 100
   cardValue: 0
-  cardType: 6
+  cardType: 3

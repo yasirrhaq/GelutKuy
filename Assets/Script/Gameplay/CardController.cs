@@ -15,11 +15,18 @@ public class CardController : MonoBehaviour {
     public bool moving = false;
 
     float step;
+
+    public Animator cardFlipAnimator;
 	// Use this for initialization
 	void Start () {
 		
 	}
-	
+    
+    public void FlipCard(bool open)
+    {
+            cardFlipAnimator.SetBool("Open", open);
+    }
+
 	// Update is called once per frame
 	void Update () {
         if (moving)

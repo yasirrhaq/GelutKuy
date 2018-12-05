@@ -12,11 +12,8 @@ public class CardYasir : ScriptableObject {
 
 public enum CardType
 {
-    punch,
-    kick,
-    lowDef,
-    normalDef,
-    highDef,
+    attack,
+    defence,
     heal,
     ultimate
 }

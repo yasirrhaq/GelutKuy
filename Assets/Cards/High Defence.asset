@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7551012f27e3ba64596e31ce2684e0a2, type: 3}
   m_Name: High Defence
   m_EditorClassIdentifier: 
-  cardSprite: {fileID: 21300000, guid: a219f6ce40e939a4a9711651ae3ed859, type: 3}
+  cardSprite: {fileID: 21300000, guid: b89860b26a2f5604bb98512e7b917d44, type: 3}
   cardId: 4
   cardValue: 15
-  cardType: 4
+  cardType: 1

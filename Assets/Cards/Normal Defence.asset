@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7551012f27e3ba64596e31ce2684e0a2, type: 3}
   m_Name: Normal Defence
   m_EditorClassIdentifier: 
-  cardSprite: {fileID: 21300000, guid: 450a060bee5a6ab4f9d3c838027132b5, type: 3}
+  cardSprite: {fileID: 21300000, guid: 0bef944bf32468a47a59429291738a08, type: 3}
   cardId: 3
   cardValue: 10
-  cardType: 3
+  cardType: 1
