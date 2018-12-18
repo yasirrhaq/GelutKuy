@@ -21,17 +21,30 @@ public class Hand : MonoBehaviour {
 
     public CardController battleCard;
 
-    public Transform graveyardPos;
+    public Graveyard graveyard;
+    public bool recycled = false;
 
     public void Draw(bool player)
     {
-        if (deck.cardIds.Count > 0)
+        if (!recycled)
         {
-            cards.Add(deck.Draw());
-            GameMaster.gm.CreateCard(cards[index], deck.transform, this.transform, cardControllers);
-            index++;
+            if (deck.cardIds.Count > 0)
+            {
+                cards.Add(deck.Draw());
+                GameMaster.gm.CreateCard(cards[index], deck.transform, this.transform, cardControllers);
+                index++;
+            }
         }
-            cardControllers[cardControllers.Count - 1].FlipCard(player);
+        else
+        {
+            if (deck.graveCardControllers.Count > 0)
+            {
+                CardController cardController = deck.DrawController();
+                GameMaster.gm.SetCardMovement(null, cardController.gameObject, deck.transform, this.transform, cardControllers, false);
+            }
+        }
+
+        cardControllers[cardControllers.Count - 1].FlipCard(player);
     }
 
     public void NextCard()
@@ -116,10 +129,12 @@ public class Hand : MonoBehaviour {
 
     public void MoveToGraveyard(CardController cardController)
     {
-        cardController.transform.SetParent(graveyardPos);
+        cardController.transform.SetParent(graveyard.transform);
         cardController.targetPos = Vector3.zero;
         cardController.moving = true;
         cardController.enabled = true;
         cardController.FlipCard(true);
+
+        graveyard.usedCardControllers.Add(cardController);
     }
 }
