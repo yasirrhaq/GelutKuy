@@ -27,12 +27,4 @@ public class Graveyard : MonoBehaviour {
         hand.recycled = true;
         status.UpdateDeckUI();
     }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Backspace))
-        {
-            RecycleCards();
-        }
-    }
 }
