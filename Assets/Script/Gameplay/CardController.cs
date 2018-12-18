@@ -17,11 +17,7 @@ public class CardController : MonoBehaviour {
     float step;
 
     public Animator cardFlipAnimator;
-	// Use this for initialization
-	void Start () {
-		
-	}
-    
+
     public void FlipCard(bool open)
     {
             cardFlipAnimator.SetBool("Open", open);
