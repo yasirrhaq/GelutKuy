@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class GameOver : MonoBehaviour {
 
     public bool gameOver;
     public Image result;
+    public GameObject mainMenu;
     public Sprite winSprite;
     public Sprite loseSprite;
 
 	public void GameOverCondition(bool win)
     {
         result.enabled = true;
+        mainMenu.SetActive(true);
         if (win)
         {
             result.sprite = winSprite;
@@ -23,13 +25,9 @@ public class GameOver : MonoBehaviour {
         }
         gameOver = true;
     }
-    // Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    public void MainMenu(int index)
+    {
+        SceneManager.LoadSceneAsync(0);
+    }
 }
