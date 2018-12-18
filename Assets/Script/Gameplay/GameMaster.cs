@@ -16,6 +16,8 @@ public class GameMaster : MonoBehaviour {
     public Graveyard graveyardOppo;
     public StatusController oppoStatus;
 
+    public GameOver gameOverController;
+
     public Turn gameTurn;
     public Phase gamePhase;
 
@@ -55,7 +57,8 @@ public class GameMaster : MonoBehaviour {
             if (timer >= 0)
             {
                 timer -= Time.deltaTime;
-            } else
+            }
+            else
             {
                 delay = false;
             }
@@ -95,181 +98,193 @@ public class GameMaster : MonoBehaviour {
             return;
         }
 
-        //move to graveyard
-        if (clearBoard)
+        if (!gameOverController.gameOver)
         {
-            hand.MoveToGraveyard(hand.battleCard);
-            handOppo.MoveToGraveyard(handOppo.battleCard);
-
-            if (!hand.recycled)
+            //move to graveyard
+            if (clearBoard)
             {
-                if (deck.cardIds.Count <= 0)
+                hand.MoveToGraveyard(hand.battleCard);
+                handOppo.MoveToGraveyard(handOppo.battleCard);
+
+                if (!hand.recycled)
                 {
-                    recycleCards = true;
+                    if (deck.cardIds.Count <= 0)
+                    {
+                        recycleCards = true;
+                    }
+
+                    if (deckOppo.cardIds.Count <= 0)
+                    {
+                        recycleCards = true;
+                    }
+                }
+                else
+                {
+                    if (deck.graveCardControllers.Count <= 0)
+                    {
+                        recycleCards = true;
+                    }
+
+                    if (deckOppo.graveCardControllers.Count <= 0)
+                    {
+                        recycleCards = true;
+                    }
                 }
 
-                if (deckOppo.cardIds.Count <= 0)
-                {
-                    recycleCards = true;
-                }
-            } else
-            {
-                if (deck.graveCardControllers.Count <= 0)
-                {
-                    recycleCards = true;
-                }
-
-                if (deckOppo.graveCardControllers.Count <= 0)
-                {
-                    recycleCards = true;
-                }
+                clearBoard = false;
+                WaitingAction();
+                return;
             }
 
-            clearBoard = false;
-            WaitingAction();
-            return;
-        }
-
-        //kalkulasi battle phase
-        if (gamePhase == Phase.Battle)
-        {
-            hand.battleCard.FlipCard(true);
-            handOppo.battleCard.FlipCard(true);
-
-            int playerBattleStat = 0;
-            int opponentBattleStat = 0;
-            int result = 0;
-
-            switch (hand.battleCard.cardType)
+            //kalkulasi battle phase
+            if (gamePhase == Phase.Battle)
             {
-                case CardType.attack:
-                    playerBattleStat = hand.battleCard.cardValue;
-                    break;
-                case CardType.defence:
-                    playerBattleStat = -hand.battleCard.cardValue;
-                    break;
-                case CardType.heal:
-                    hand.health += hand.battleCard.cardValue;
-                    break;
-                //case CardType.ultimate:
-                //    break;
-                default:
-                    break;
-            }
+                hand.battleCard.FlipCard(true);
+                handOppo.battleCard.FlipCard(true);
 
-            switch (handOppo.battleCard.cardType)
-            {
-                case CardType.attack:
-                    opponentBattleStat = handOppo.battleCard.cardValue;
-                    break;
-                case CardType.defence:
-                    opponentBattleStat = -handOppo.battleCard.cardValue;
-                    break;
-                case CardType.heal:
-                    handOppo.health += handOppo.battleCard.cardValue;
-                    break;
-                //case CardType.ultimate:
-                //    break;
-                default:
-                    break;
-            }
+                int playerBattleStat = 0;
+                int opponentBattleStat = 0;
+                int result = 0;
 
-            if (playerBattleStat > 0 && opponentBattleStat > 0)
-            {
-                hand.health -= opponentBattleStat;
-                handOppo.health -= playerBattleStat;
-            }
-            else if (playerBattleStat > 0 && opponentBattleStat <= 0)
-            {
-                result = playerBattleStat + opponentBattleStat;
-                if (result > 0)
+                switch (hand.battleCard.cardType)
                 {
-                    handOppo.health -= result;
+                    case CardType.attack:
+                        playerBattleStat = hand.battleCard.cardValue;
+                        break;
+                    case CardType.defence:
+                        playerBattleStat = -hand.battleCard.cardValue;
+                        break;
+                    case CardType.heal:
+                        hand.health += hand.battleCard.cardValue;
+                        break;
+                    //case CardType.ultimate:
+                    //    break;
+                    default:
+                        break;
                 }
-                else if (result < 0)
+
+                switch (handOppo.battleCard.cardType)
                 {
-                    hand.health -= Mathf.Abs(result);
+                    case CardType.attack:
+                        opponentBattleStat = handOppo.battleCard.cardValue;
+                        break;
+                    case CardType.defence:
+                        opponentBattleStat = -handOppo.battleCard.cardValue;
+                        break;
+                    case CardType.heal:
+                        handOppo.health += handOppo.battleCard.cardValue;
+                        break;
+                    //case CardType.ultimate:
+                    //    break;
+                    default:
+                        break;
                 }
+
+                if (playerBattleStat > 0 && opponentBattleStat > 0)
+                {
+                    hand.health -= opponentBattleStat;
+                    handOppo.health -= playerBattleStat;
+                }
+                else if (playerBattleStat > 0 && opponentBattleStat <= 0)
+                {
+                    result = playerBattleStat + opponentBattleStat;
+                    if (result > 0)
+                    {
+                        handOppo.health -= result;
+                    }
+                    else if (result < 0)
+                    {
+                        hand.health -= Mathf.Abs(result);
+                    }
+                }
+                else if (playerBattleStat <= 0 && opponentBattleStat > 0)
+                {
+                    result = opponentBattleStat + playerBattleStat;
+                    if (result > 0)
+                    {
+                        hand.health -= result;
+                    }
+                    else if (result < 0)
+                    {
+                        handOppo.health -= Mathf.Abs(result);
+                    }
+                }
+                gamePhase = Phase.Draw;
+                clearBoard = true;
+                WaitingAction(1f);
+
+                playerStatus.UpdateHealthUI();
+                oppoStatus.UpdateHealthUI();
+                Debug.Log("HP Kita : " + hand.health + " HP Musuh : " + handOppo.health);
+                if (hand.health <= 0)
+                {
+                    gameOverController.GameOverCondition(false);
+                }
+                else if (handOppo.health <= 0)
+                {
+                    gameOverController.GameOverCondition(true);
+                }
+                return;
             }
-            else if (playerBattleStat <= 0 && opponentBattleStat > 0)
+
+            //turn base
+            if (gameTurn == Turn.Player)
             {
-                result = opponentBattleStat + playerBattleStat;
-                if (result > 0)
+                if (Input.GetKeyDown(KeyCode.Return))
                 {
-                    hand.health -= result;
+                    switch (gamePhase)
+                    {
+                        case Phase.Draw:
+                            hand.Draw(true);
+                            gamePhase = Phase.Main;
+                            hand.ToggleSelector(true);
+                            break;
+                        case Phase.Main:
+                            hand.ToggleSelector(false);
+                            hand.MoveToBattlePos();
+                            hand.Rearrange();
+                            gameTurn = Turn.Opponent;
+                            gamePhase = Phase.Draw;
+                            break;
+                        default:
+                            break;
+                    }
+                    WaitingAction();
                 }
-                else if (result < 0)
+                if (gamePhase == Phase.Main)
                 {
-                    handOppo.health -= Mathf.Abs(result);
+                    if (Input.GetKeyDown(KeyCode.D))
+                    {
+                        hand.NextCard();
+                    }
+                    else if (Input.GetKeyDown(KeyCode.A))
+                    {
+                        hand.PrevCard();
+                    }
                 }
             }
-            gamePhase = Phase.Draw;
-            clearBoard = true;
-            WaitingAction(1f);
-
-            playerStatus.UpdateHealthUI();
-            oppoStatus.UpdateHealthUI();
-            Debug.Log("HP Kita : " + hand.health+ " HP Musuh : " + handOppo.health);
-            return;
-        }
-
-        //turn base
-        if (gameTurn == Turn.Player)
-        { 
-            if (Input.GetKeyDown(KeyCode.Return))
+            else
             {
                 switch (gamePhase)
                 {
                     case Phase.Draw:
-                        hand.Draw(true);
+                        handOppo.Draw(false);
                         gamePhase = Phase.Main;
-                        hand.ToggleSelector(true);
                         break;
                     case Phase.Main:
-                        hand.ToggleSelector(false);
-                        hand.MoveToBattlePos();
-                        hand.Rearrange();
-                        gameTurn = Turn.Opponent;
-                        gamePhase = Phase.Draw;
+                        int random = Random.Range(0, handOppo.cardControllers.Count);
+                        handOppo.selectedIndex = random;
+                        handOppo.MoveToBattlePos();
+                        handOppo.Rearrange();
+                        gameTurn = Turn.Player;
+                        gamePhase = Phase.Battle;
                         break;
                     default:
                         break;
                 }
+                hand.ChangeSelectorPosition(0);
                 WaitingAction();
             }
-            if (gamePhase == Phase.Main)
-            {
-                if (Input.GetKeyDown(KeyCode.D))
-                {
-                    hand.NextCard();
-                }
-                else if (Input.GetKeyDown(KeyCode.A))
-                {
-                    hand.PrevCard();
-                }
-            }
-        }
-        else
-        {
-            switch (gamePhase)
-            {
-                case Phase.Draw:
-                    handOppo.Draw(false);
-                    gamePhase = Phase.Main;
-                    break;
-                case Phase.Main:
-                    int random = Random.Range(0, handOppo.cardControllers.Count);
-                    handOppo.selectedIndex = random;
-                    handOppo.MoveToBattlePos();
-                    handOppo.Rearrange();
-                    gameTurn = Turn.Player;
-                    gamePhase = Phase.Battle;
-                    break;
-                default:
-                    break;
-            }
-            hand.ChangeSelectorPosition(0);
-            WaitingAction();
         }
     }
 
