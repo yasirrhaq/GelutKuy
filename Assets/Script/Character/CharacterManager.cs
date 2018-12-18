@@ -63,6 +63,6 @@ public class CharacterManager : MonoBehaviour {
     public void Confirm()
     {
         PlayerPrefs.SetInt("Character Selected", index);
-        SceneManager.LoadSceneAsync("BattleScene");
+        SceneManager.LoadSceneAsync("Gameplay");
     }
 }
