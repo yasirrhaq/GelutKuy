@@ -1,15 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameMaster : MonoBehaviour {
     public static GameMaster gm;
     public GameObject cardPrefab;
     public Deck deck;
     public Hand hand;
+    public Graveyard graveyard;
+    public StatusController playerStatus;
 
     public Deck deckOppo;
     public Hand handOppo;
+    public Graveyard graveyardOppo;
+    public StatusController oppoStatus;
 
     public Turn gameTurn;
     public Phase gamePhase;
@@ -20,6 +25,7 @@ public class GameMaster : MonoBehaviour {
 
     bool delay;
     bool clearBoard;
+    bool recycleCards;
 
     private void Awake()
     {
@@ -30,6 +36,13 @@ public class GameMaster : MonoBehaviour {
     {
         deck.Shuffle();
         deckOppo.Shuffle();
+
+        playerStatus.UpdateHealthUI();
+        playerStatus.UpdateDeckUI();
+
+        oppoStatus.UpdateHealthUI();
+        oppoStatus.UpdateDeckUI();
+
         hand.Draw3(true);
         handOppo.Draw3(false);
     }
@@ -49,11 +62,69 @@ public class GameMaster : MonoBehaviour {
             return;
         }
 
+        //recycle card
+        if (recycleCards)
+        {
+            if (!hand.recycled)
+            {
+                if (deck.cardIds.Count <= 0)
+                {
+                    graveyard.RecycleCards();
+                }
+
+                if (deckOppo.cardIds.Count <= 0)
+                {
+                    graveyardOppo.RecycleCards();
+                }
+            }
+            else
+            {
+                if (deck.graveCardControllers.Count <= 0)
+                {
+                    graveyard.RecycleCards();
+                }
+
+                if (deckOppo.graveCardControllers.Count <= 0)
+                {
+                    graveyardOppo.RecycleCards();
+                }
+            }
+
+            recycleCards = false;
+            WaitingAction();
+            return;
+        }
+
         //move to graveyard
         if (clearBoard)
         {
             hand.MoveToGraveyard(hand.battleCard);
             handOppo.MoveToGraveyard(handOppo.battleCard);
+
+            if (!hand.recycled)
+            {
+                if (deck.cardIds.Count <= 0)
+                {
+                    recycleCards = true;
+                }
+
+                if (deckOppo.cardIds.Count <= 0)
+                {
+                    recycleCards = true;
+                }
+            } else
+            {
+                if (deck.graveCardControllers.Count <= 0)
+                {
+                    recycleCards = true;
+                }
+
+                if (deckOppo.graveCardControllers.Count <= 0)
+                {
+                    recycleCards = true;
+                }
+            }
+
             clearBoard = false;
             WaitingAction();
             return;
@@ -135,6 +206,9 @@ public class GameMaster : MonoBehaviour {
             gamePhase = Phase.Draw;
             clearBoard = true;
             WaitingAction(1f);
+
+            playerStatus.UpdateHealthUI();
+            oppoStatus.UpdateHealthUI();
             Debug.Log("HP Kita : " + hand.health+ " HP Musuh : " + handOppo.health);
             return;
         }
@@ -201,8 +275,19 @@ public class GameMaster : MonoBehaviour {
 
     public void CreateCard(CardYasir cardInfo, Transform startPos, Transform cardPos, List<CardController> cardList)
     {
-        GameObject newCard = Instantiate(cardPrefab, startPos);
+        //GameObject newCard = Instantiate(cardPrefab, startPos);
+        //newCard.transform.SetParent(cardPos);
+
+        GameObject newCard = Instantiate(cardPrefab);
+        SetCardMovement(cardInfo, newCard, startPos, cardPos, cardList);
+    }
+
+    public void SetCardMovement(CardYasir cardInfo, GameObject newCard, Transform startPos, Transform cardPos, List<CardController> cardList, bool render = true)
+    {
+        newCard.transform.SetParent(startPos);
+        newCard.transform.localPosition = Vector3.zero;
         newCard.transform.SetParent(cardPos);
+        
         CardController newCardController = newCard.GetComponent<CardController>();
         newCardController.enabled = true;
 
@@ -211,7 +296,10 @@ public class GameMaster : MonoBehaviour {
         newCardController.targetPos = new Vector3((cardList.Count - 1) * 1.5f, 0, 0);
         newCardController.moving = true;
 
-        RenderCard(cardInfo, newCardController);
+        if (render)
+        {
+            RenderCard(cardInfo, newCardController);
+        }
     }
 
     public void RenderCard(CardYasir cardInfo, CardController card)

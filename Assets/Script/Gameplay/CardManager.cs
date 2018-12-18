@@ -11,7 +11,6 @@ public class CardManager : MonoBehaviour {
         {
             if (id == cardData[i].cardId)
             {
-                Debug.Log("berhasil");
                 return cardData[i];
             }
         }
