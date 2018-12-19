@@ -25,6 +25,13 @@ public class GameMaster : MonoBehaviour {
 
     public float turnDelay = 2f;
 
+    public GameObject vfx_Hit;
+    public GameObject vfx_Shield;
+    public GameObject vfx_Heal;
+    public GameObject vfx_HitOppo;
+    public GameObject vfx_ShieldOppo;
+    public GameObject vfx_HealOppo;
+
     float timer;
 
     bool delay;
@@ -156,12 +163,15 @@ public class GameMaster : MonoBehaviour {
                 {
                     case CardType.attack:
                         playerBattleStat = hand.battleCard.cardValue;
+                        TriggerEffect(vfx_HitOppo);
                         break;
                     case CardType.defence:
                         playerBattleStat = -hand.battleCard.cardValue;
+                        TriggerEffect(vfx_Shield);
                         break;
                     case CardType.heal:
                         hand.health += hand.battleCard.cardValue;
+                        TriggerEffect(vfx_Heal);
                         break;
                     //case CardType.ultimate:
                     //    break;
@@ -173,12 +183,15 @@ public class GameMaster : MonoBehaviour {
                 {
                     case CardType.attack:
                         opponentBattleStat = handOppo.battleCard.cardValue;
+                        TriggerEffect(vfx_Hit);
                         break;
                     case CardType.defence:
                         opponentBattleStat = -handOppo.battleCard.cardValue;
+                        TriggerEffect(vfx_ShieldOppo);
                         break;
                     case CardType.heal:
                         handOppo.health += handOppo.battleCard.cardValue;
+                        TriggerEffect(vfx_HealOppo);
                         break;
                     //case CardType.ultimate:
                     //    break;
@@ -348,6 +361,23 @@ public class GameMaster : MonoBehaviour {
     {
         timer = turnDelay + addTime;
         delay = true;
+    }
+
+    public void TriggerEffect(GameObject vfx_obj)
+    {
+        vfx_obj.SetActive(false);
+        ParticleSystem ps = vfx_obj.GetComponentInChildren<ParticleSystem>();
+
+        vfx_obj.SetActive(true);
+
+        StartCoroutine(DeactivatedObj(vfx_obj, ps.duration));
+    }
+
+    IEnumerator DeactivatedObj(GameObject obj, float duration = 0)
+    {
+        yield return new WaitForSeconds(duration);
+        obj.SetActive(false);
+        yield return null;
     }
 }
 
