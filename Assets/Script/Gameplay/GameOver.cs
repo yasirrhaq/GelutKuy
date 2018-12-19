@@ -8,6 +8,7 @@ public class GameOver : MonoBehaviour {
     public bool gameOver;
     public Image result;
     public GameObject mainMenu;
+    public GameObject restart;
     public Sprite winSprite;
     public Sprite loseSprite;
 
@@ -15,6 +16,7 @@ public class GameOver : MonoBehaviour {
     {
         result.enabled = true;
         mainMenu.SetActive(true);
+        restart.SetActive(true);
         if (win)
         {
             result.sprite = winSprite;
@@ -29,5 +31,10 @@ public class GameOver : MonoBehaviour {
     public void MainMenu(int index)
     {
         SceneManager.LoadSceneAsync(0);
+    }
+
+    public void reset()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

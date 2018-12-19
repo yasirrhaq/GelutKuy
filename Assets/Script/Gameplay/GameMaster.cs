@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameMaster : MonoBehaviour {
     public static GameMaster gm;
+    public SoundManager sound;
     public GameObject cardPrefab;
     public Deck deck;
     public Hand hand;
@@ -36,6 +38,8 @@ public class GameMaster : MonoBehaviour {
 
     private void Start()
     {
+        sound.playBackground();
+
         deck.Shuffle();
         deckOppo.Shuffle();
 
@@ -68,6 +72,7 @@ public class GameMaster : MonoBehaviour {
         //recycle card
         if (recycleCards)
         {
+            sound.playGrave();
             if (!hand.recycled)
             {
                 if (deck.cardIds.Count <= 0)
@@ -139,6 +144,7 @@ public class GameMaster : MonoBehaviour {
             //kalkulasi battle phase
             if (gamePhase == Phase.Battle)
             {
+                sound.playBattle();
                 hand.battleCard.FlipCard(true);
                 handOppo.battleCard.FlipCard(true);
 
@@ -218,11 +224,15 @@ public class GameMaster : MonoBehaviour {
                 Debug.Log("HP Kita : " + hand.health + " HP Musuh : " + handOppo.health);
                 if (hand.health <= 0)
                 {
+                    sound.playLose();
                     gameOverController.GameOverCondition(false);
+
                 }
                 else if (handOppo.health <= 0)
                 {
+                    sound.playWin();
                     gameOverController.GameOverCondition(true);
+
                 }
                 return;
             }
@@ -235,11 +245,13 @@ public class GameMaster : MonoBehaviour {
                     switch (gamePhase)
                     {
                         case Phase.Draw:
+                            sound.playDraw();
                             hand.Draw(true);
                             gamePhase = Phase.Main;
                             hand.ToggleSelector(true);
                             break;
                         case Phase.Main:
+                            sound.playMain();
                             hand.ToggleSelector(false);
                             hand.MoveToBattlePos();
                             hand.Rearrange();
@@ -256,10 +268,13 @@ public class GameMaster : MonoBehaviour {
                     if (Input.GetKeyDown(KeyCode.D))
                     {
                         hand.NextCard();
+
+                        sound.playSlide();
                     }
                     else if (Input.GetKeyDown(KeyCode.A))
                     {
                         hand.PrevCard();
+                        sound.playSlide();
                     }
                 }
             }
@@ -268,10 +283,14 @@ public class GameMaster : MonoBehaviour {
                 switch (gamePhase)
                 {
                     case Phase.Draw:
+                        sound.playDraw();
+
                         handOppo.Draw(false);
                         gamePhase = Phase.Main;
                         break;
                     case Phase.Main:
+                        sound.playMain();
+
                         int random = Random.Range(0, handOppo.cardControllers.Count);
                         handOppo.selectedIndex = random;
                         handOppo.MoveToBattlePos();
