@@ -45,6 +45,9 @@ public class GameMaster : MonoBehaviour {
 
     private void Start()
     {
+        //untuk start awal scene
+        Time.timeScale = 1;
+
         sound.playBackground();
 
         deck.Shuffle();

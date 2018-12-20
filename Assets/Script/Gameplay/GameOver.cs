@@ -30,7 +30,7 @@ public class GameOver : MonoBehaviour {
 
     public void MainMenu(int index)
     {
-        SceneManager.LoadSceneAsync(0);
+        SceneManager.LoadSceneAsync(index);
     }
 
     public void reset()

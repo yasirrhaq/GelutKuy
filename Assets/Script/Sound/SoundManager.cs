@@ -13,6 +13,20 @@ public class SoundManager : MonoBehaviour {
     public AudioClip lose;
     public AudioSource background;
     public AudioSource fx;
+    public AudioSource pause;
+
+
+    public void gamePause()
+    {
+        background.Pause();
+        pause.Play();
+    }
+
+    public void gameResume()
+    {
+        background.Play();
+        pause.Stop();
+    }
 
     public void playBackground()
     {
