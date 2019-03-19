@@ -1,11 +1,11 @@
 # GelutKuy
 Repository for GelutKuy Game Project
 
-##Main Menu
+## Main Menu
 ![mainmenu](https://user-images.githubusercontent.com/41731559/54625216-6e2ace80-4aa1-11e9-85d5-9a719e20be82.png)
 
-##Character Selection
-![gatot](https://user-images.githubusercontent.com/41731559/54625225-72ef8280-4aa1-11e9-9248-f9bed8a12411.png)
+## Character Selection
+![gatot1](https://user-images.githubusercontent.com/41731559/54625536-10e34d00-4aa2-11e9-9484-13f8b39ef5f7.png)
 
-##Gameplay
+## Gameplay
 ![you win](https://user-images.githubusercontent.com/41731559/54625240-78e56380-4aa1-11e9-9a55-7f5b3fe7c88e.png)
